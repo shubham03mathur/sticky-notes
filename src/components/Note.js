@@ -10,24 +10,16 @@ const Note = forwardRef((
     return (
         <div
             ref={ref}
+            className="absolute flex flex-col p-2 w-52 h-28 cursor-move border rounded-md border-yellow-200 bg-yellow-300"
             style={{
-                position: "absolute",
-                padding: "10px",
                 left: `${initialPosition?.x}px`,
                 top: `${initialPosition?.y}px`,
-                display: "flex",
-                width: "200px",
-                height: "100px",
                 userSelect: "none",
-                cursor: "move",
-                border: "1px solid #000",
-                backgroundColor: "#c36542",
-                // overflowX: "none",
-                // overflowY: "auto",
             }}
             {...props}
         >
-            <p style={{ width: '100%'}}><span>📌</span> {content}</p>
+            <div title="click to remove/unpin" className="font-mono text-lg flex w-full cursor-pointer justify-center">📌</div>
+            <div className="font-mono text-amber-700 leading-relaxed"><p> {content}</p></div>
         </div>
     );
 });
