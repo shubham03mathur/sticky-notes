@@ -101,7 +101,6 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
                 content={note.text}
                 initialPosition={note?.coords}
                 onMouseDown={(e) => handleDragStart(e, note)}
-                className="sticky-note"
             />
         );
     });
