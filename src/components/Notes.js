@@ -2,10 +2,9 @@ import { createRef, useEffect, useRef } from "react";
 import Note from "./Note";
 
 const Notes = ({ notes = {}, setNotes = () => {} }) => {
-    let notesTobeRendered = [];
     const noteRefs = useRef([]);
-
     useEffect(() => {
+        let notesTobeRendered = [];
         const notesStack = localStorage.getItem("notes");
         if (notesStack) {
             notesTobeRendered = JSON.parse(notesStack);
@@ -31,15 +30,22 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
 
     const handleDragStart = (event, note) => {
         const currentNote = noteRefs.current[note.id].current;
-        const rect = currentNote.getBoundingClientRect();
         const startPos = note.coords;
+        const osX = event.clientX - startPos.x;
+        const osY = event.clientY - startPos.y;
 
-        const handleMouseMove = () => {
-            const offsetX = event.clientX - rect.left;
-            const offsetY = event.clientY - rect.top;
+        const handleMouseMove = (moveEvent) => {
+            let newLeft = moveEvent.clientX - osX;
+            let newTop = moveEvent.clientY - osY;
 
-            currentNote.style.left = `${offsetX}px`;
-            currentNote.style.top = `${offsetY}px`;
+            const maxLeft = window.innerWidth - currentNote.offsetWidth;
+            const maxTop = window.innerHeight - currentNote.offsetHeight;
+
+            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+            newTop = Math.max(0, Math.min(newTop, maxTop));
+
+            currentNote.style.left = `${newLeft}px`;
+            currentNote.style.top = `${newTop}px`;
         };
 
         const handleMouseUp = () => {
@@ -47,7 +53,6 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
             document.removeEventListener("mouseup", handleMouseUp);
 
             const finalSnapshot = currentNote.getBoundingClientRect();
-            console.log(finalSnapshot);
             const newPosition = { x: finalSnapshot.left, y: finalSnapshot.top };
 
             if (checkForOverlap(note.id)) {
@@ -80,7 +85,6 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         const n = notes.findIndex((nt) => nt.id === id);
         const stateToBeUpdated = [...notes];
         stateToBeUpdated[n].coords = {...newPos};
-        console.log(stateToBeUpdated);
         setNotes(stateToBeUpdated);
         localStorage.setItem("notes", JSON.stringify(stateToBeUpdated));
     };

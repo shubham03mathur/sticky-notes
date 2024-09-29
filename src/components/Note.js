@@ -27,7 +27,7 @@ const Note = forwardRef((
             }}
             {...props}
         >
-            <p>📌 {content}</p>
+            <p style={{ width: '100%'}}><span>📌</span> {content}</p>
         </div>
     );
 });
