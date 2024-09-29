@@ -17,6 +17,7 @@ export default [
         sourceType: 'module',
       },
     },
+    loader: { '.js': 'jsx' },
     settings: { react: { version: '18.3' } },
     plugins: {
       react,
