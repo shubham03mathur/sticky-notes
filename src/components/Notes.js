@@ -1,6 +1,8 @@
 import { createRef, useEffect, useRef } from "react";
 import Note from "./Note";
 
+import { determinePostion } from "../lib/utils";
+
 const Notes = ({ notes = {}, setNotes = () => {} }) => {
     const noteRefs = useRef([]);
     useEffect(() => {
@@ -18,15 +20,7 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         localStorage.setItem("notes", JSON.stringify(notesTobeRendered));
     }, [notes.length]);
 
-    const determinePostion = () => {
-        const positionX = window.innerWidth - 250;
-        const positionY = window.innerHeight - 250;
-
-        return {
-            x: Math.floor(Math.random() * positionX),
-            y: Math.floor(Math.random() * positionY),
-        };
-    };
+    
 
     const handleDragStart = (event, note) => {
         const currentNote = noteRefs.current[note.id].current;
