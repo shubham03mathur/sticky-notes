@@ -20,8 +20,6 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         localStorage.setItem("notes", JSON.stringify(notesTobeRendered));
     }, [notes.length]);
 
-    
-
     const handleDragStart = (event, note) => {
         const currentNote = noteRefs.current[note.id].current;
         const startPos = note.coords;
@@ -75,6 +73,19 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         document.addEventListener("mouseup", handleMouseUp);
     };
 
+    const handleClick = (event, noteId) => {
+        event.preventDefault();
+        const isConfirmed = confirm("Are you sure you want to delete this note?");
+        if (isConfirmed) {
+            const filteredNotes = notes.filter(note => {
+                return note.id !== noteId;
+            });
+
+            setNotes(filteredNotes);
+            localStorage.setItem("notes", JSON.stringify(filteredNotes));
+        }
+    }
+
     const updateNewPosition = (id, newPos) => {
         const n = notes.findIndex((nt) => nt.id === id);
         const stateToBeUpdated = [...notes];
@@ -95,6 +106,7 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
                 content={note.text}
                 initialPosition={note?.coords}
                 onMouseDown={(e) => handleDragStart(e, note)}
+                onClickHandler={(e) => handleClick(e, note.id)}
             />
         );
     });

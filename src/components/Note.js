@@ -4,7 +4,7 @@
 import { forwardRef } from "react";
 
 const Note = forwardRef((
-    { content, initialPosition, ...props },
+    { content, initialPosition, onClickHandler, ...props },
     ref
 ) => {
     return (
@@ -18,8 +18,8 @@ const Note = forwardRef((
             }}
             {...props}
         >
-            <div title="click to remove/unpin" className="font-mono text-lg flex w-full cursor-pointer justify-center">📌</div>
-            <div className="font-mono text-amber-700 leading-relaxed"><p> {content}</p></div>
+            <div title="click to remove/unpin" className="font-mono text-lg flex w-full cursor-pointer justify-center"><span onClick={onClickHandler} >📌</span></div>
+            <div className="font-mono text-amber-700 leading-relaxed "><p> {content}</p></div>
         </div>
     );
 });

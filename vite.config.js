@@ -8,9 +8,9 @@ export default defineConfig({
   
   // Optional Esbuild settings (Vite should handle JSX without this)
   esbuild: {
-    loader: 'jsx', // Ensures JSX is processed in .js and .jsx files
-    include: /\.[jt]sx?$/, // Matches both .js, .jsx, .ts, and .tsx files
-    exclude: /node_modules/ // Avoid processing node_modules
+    loader: 'jsx', // Explicitly tell Vite to treat `.js` files as `.jsx` 
+    include: /\.(js|jsx)$/, // Ensure .js and .jsx files are included
+    exclude: /node_modules/, // Exclude node_modules folder
   },
 
   css: {
