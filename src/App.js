@@ -24,11 +24,11 @@ function App() {
         const form = event.target;
         const formData = new FormData(form);
         const note = formData.get('note');
-        if (note.length > 50) {
-            alert("Please keep it short 🙂");
+        if(!note) {
             return false;
         }
-        if(!note) {
+        if (note.length > 50) {
+            alert("Please keep it short 🙂");
             return false;
         }
         inputRef.current.value = '';
