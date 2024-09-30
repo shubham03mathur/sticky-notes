@@ -15,7 +15,7 @@ function App() {
         },
         {
             id: 2,
-            text: "Learn how to investment.",
+            text: "Learn how to do investments.",
         },
     ]);
 
