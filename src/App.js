@@ -66,7 +66,7 @@ function App() {
     };
 
     if (isMobile) {
-        return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Yo! This app is not supported on mobile devices, Because you already got one on your phone 🙂</div>;
+        return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Hey! This app is not supported on mobile devices (yet), Because you already got one on your phone 🙂 <p>You can find more details here <a target="_blank" className="text-blue-800 underline" href="https://github.com/shubham03mathur/sticky-notes">here</a></p></div>;
     }
 
     return (
