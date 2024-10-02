@@ -8,7 +8,6 @@ import { determinePostion } from "./lib/utils";
 
 function App() {
     const inputRef = useRef("");
-    //const [isMobile, setIsMobile] = useState(false);
     const [notes, setNotes] = useState([
         {
             id: 1,
@@ -19,26 +18,6 @@ function App() {
             text: "Learn how to do investments.",
         },
     ]);
-
-    // useEffect(() => {
-    //     const checkForMobile = () => {
-    //         if (window.innerWidth < 768) {
-    //             setIsMobile(true);
-    //         } else {
-    //             setIsMobile(false);
-    //         }
-    //     };
-
-    //     // Check on load
-    //     checkForMobile();
-
-    //     // Check on window resize
-    //     window.addEventListener("resize", checkForMobile);
-
-    //     return () => {
-    //         window.removeEventListener("resize", checkForMobile);
-    //     };
-    // }, []);
 
     const handleAddNote = (event) => {
         event.preventDefault();
@@ -64,10 +43,6 @@ function App() {
         setNotes(currentState);
         localStorage.setItem("notes", JSON.stringify(currentState));
     };
-
-    // if (isMobile) {
-    //     return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Hey! This app is not supported on mobile devices (yet), Because you already got one on your phone 🙂 <p>You can find more details here <a target="_blank" className="text-blue-800 underline" href="https://github.com/shubham03mathur/sticky-notes">here</a></p></div>;
-    // }
 
     return (
         <div>

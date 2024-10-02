@@ -21,6 +21,7 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
     }, [notes.length]);
 
     const handleDragStart = (event, note) => {
+        event.preventDefault();
         const isTouchEvent = event.type === "touchstart";
         const currentNote = noteRefs.current[note.id].current;
         const startPos = note.coords;
@@ -32,6 +33,7 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         const osY = startY - startPos.y;
 
         const handleMouseMove = (moveEvent) => {
+            moveEvent.preventDefault();
             const moveX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
             const moveY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
 
