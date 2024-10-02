@@ -11,7 +11,6 @@ A **React-based Sticky Notes Application** where users can create, move, and sav
   - [Running the App](#running-the-app)
 - [Usage](#usage)
 - [Technologies Used](#technologies-used)
-- [Screenshots](#screenshots)
 - [Future Improvements](#future-improvements)
 - [License](#license)
 
@@ -21,9 +20,7 @@ A **React-based Sticky Notes Application** where users can create, move, and sav
 - Save note content and positions using `localStorage`.
 - Dynamic and draggable sticky notes.
 - Responsive design (can be restricted from mobile view if needed).
-- Editable note content.
-- Ellipsis (`...`) handling for overflowing text.
-- Styled with Tailwind CSS for easy customization.
+- Styled with Tailwind CSS for easy customization and shadcn components (https://ui.shadcn.com/) for faster development.
 
 ## Getting Started
 
@@ -106,6 +103,7 @@ This will output the optimized production-ready build in the `dist` folder.
 ## Future Improvements
 
 - **Mobile Support**: The app is currently designed for desktop use only. Add full mobile responsiveness or intentionally block it from mobile devices.
+- **Handling large text**: Ellipsis (`...`) handling for overflowing text.
 - **Note Resizing**: Allow users to resize sticky notes.
 - **Customizable Colors**: Let users change the background color of each note.
 - **Better Drag and Drop**: Improve the smoothness of drag-and-drop functionality across various screen sizes.
