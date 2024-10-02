@@ -26,19 +26,26 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         const currentNote = noteRefs.current[note.id].current;
         const startPos = note.coords;
 
-        const startX = isTouchEvent ? event.touches[0].clientX : event.clientX;
-        const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+        let osX, osY;
 
-        const osX = startX - startPos.x;
-        const osY = startY - startPos.y;
+        if (event.type === "mousedown") {
+            osX = event.clientX - startPos.x;
+            osY = event.clientY - startPos.y;
+        } else if (event.type === "touchstart") {
+            osX = event.touches[0].clientX - startPos.x;
+            osY = event.touches[0].clientY - startPos.y;
+        }
 
         const handleMouseMove = (moveEvent) => {
             moveEvent.preventDefault();
-            const moveX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
-            const moveY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
-
-            let newLeft = moveX - osX;
-            let newTop = moveY - osY;
+            let newLeft, newTop;
+            if (moveEvent.type === "mousemove") {
+                newLeft = moveEvent.clientX - osX;
+                newTop = moveEvent.clientY - osY;
+            } else if (moveEvent.type === "touchmove") {
+                newLeft = moveEvent.touches[0].clientX - osX;
+                newTop = moveEvent.touches[0].clientY - osY;
+            }
 
             const maxLeft = window.innerWidth - currentNote.offsetWidth;
             const maxTop = window.innerHeight - currentNote.offsetHeight;
@@ -51,8 +58,10 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         };
 
         const handleMouseUp = () => {
-            document.removeEventListener(isTouchEvent ? "touchmove" : "mousemove", handleMouseMove);
-            document.removeEventListener(isTouchEvent ? "touchend" : "mouseup", handleMouseUp);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener("touchmove", handleMouseMove);
+            document.removeEventListener("touchend", handleMouseUp);
 
             const finalSnapshot = currentNote.getBoundingClientRect();
             const newPosition = { x: finalSnapshot.left, y: finalSnapshot.top };
@@ -79,27 +88,31 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
                 );
             });
         };
-        document.addEventListener(isTouchEvent ? "touchmove" : "mousemove", handleMouseMove);
-        document.addEventListener(isTouchEvent ? "touchend" : "mouseup", handleMouseUp);
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+        document.addEventListener("touchmove", handleMouseMove);
+        document.addEventListener("touchend", handleMouseUp);
     };
 
     const handleClick = (event, noteId) => {
         event.preventDefault();
-        const isConfirmed = confirm("Are you sure you want to delete this note?");
+        const isConfirmed = confirm(
+            "Are you sure you want to delete this note?"
+        );
         if (isConfirmed) {
-            const filteredNotes = notes.filter(note => {
+            const filteredNotes = notes.filter((note) => {
                 return note.id !== noteId;
             });
 
             setNotes(filteredNotes);
             localStorage.setItem("notes", JSON.stringify(filteredNotes));
         }
-    }
+    };
 
     const updateNewPosition = (id, newPos) => {
         const n = notes.findIndex((nt) => nt.id === id);
         const stateToBeUpdated = [...notes];
-        stateToBeUpdated[n].coords = {...newPos};
+        stateToBeUpdated[n].coords = { ...newPos };
         setNotes(stateToBeUpdated);
         localStorage.setItem("notes", JSON.stringify(stateToBeUpdated));
     };
