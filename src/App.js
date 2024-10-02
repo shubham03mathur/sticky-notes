@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./index.css";
 import Notes from "./components/Notes";
 
@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { determinePostion } from "./lib/utils";
 
 function App() {
-    const inputRef = useRef('');
+    const inputRef = useRef("");
+    const [isMobile, setIsMobile] = useState(false);
     const [notes, setNotes] = useState([
         {
             id: 1,
@@ -19,19 +20,39 @@ function App() {
         },
     ]);
 
+    useEffect(() => {
+        const checkForMobile = () => {
+            if (window.innerWidth < 768) {
+                setIsMobile(true);
+            } else {
+                setIsMobile(false);
+            }
+        };
+
+        // Check on load
+        checkForMobile();
+
+        // Check on window resize
+        window.addEventListener("resize", checkForMobile);
+
+        return () => {
+            window.removeEventListener("resize", checkForMobile);
+        };
+    }, []);
+
     const handleAddNote = (event) => {
         event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
-        const note = formData.get('note');
-        if(!note) {
+        const note = formData.get("note");
+        if (!note) {
             return false;
         }
         if (note.length > 50) {
             alert("Please keep it short 🙂");
             return false;
         }
-        inputRef.current.value = '';
+        inputRef.current.value = "";
         const currentState = [...notes];
         const coords = determinePostion();
         currentState.push({
@@ -43,6 +64,10 @@ function App() {
         setNotes(currentState);
         localStorage.setItem("notes", JSON.stringify(currentState));
     };
+
+    if (isMobile) {
+        return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Yo! This app is not supported on mobile devices, Because you already got one on your phone 🙂</div>;
+    }
 
     return (
         <div>
