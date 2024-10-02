@@ -8,7 +8,7 @@ import { determinePostion } from "./lib/utils";
 
 function App() {
     const inputRef = useRef("");
-    const [isMobile, setIsMobile] = useState(false);
+    //const [isMobile, setIsMobile] = useState(false);
     const [notes, setNotes] = useState([
         {
             id: 1,
@@ -20,25 +20,25 @@ function App() {
         },
     ]);
 
-    useEffect(() => {
-        const checkForMobile = () => {
-            if (window.innerWidth < 768) {
-                setIsMobile(true);
-            } else {
-                setIsMobile(false);
-            }
-        };
+    // useEffect(() => {
+    //     const checkForMobile = () => {
+    //         if (window.innerWidth < 768) {
+    //             setIsMobile(true);
+    //         } else {
+    //             setIsMobile(false);
+    //         }
+    //     };
 
-        // Check on load
-        checkForMobile();
+    //     // Check on load
+    //     checkForMobile();
 
-        // Check on window resize
-        window.addEventListener("resize", checkForMobile);
+    //     // Check on window resize
+    //     window.addEventListener("resize", checkForMobile);
 
-        return () => {
-            window.removeEventListener("resize", checkForMobile);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener("resize", checkForMobile);
+    //     };
+    // }, []);
 
     const handleAddNote = (event) => {
         event.preventDefault();
@@ -65,27 +65,27 @@ function App() {
         localStorage.setItem("notes", JSON.stringify(currentState));
     };
 
-    if (isMobile) {
-        return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Hey! This app is not supported on mobile devices (yet), Because you already got one on your phone 🙂 <p>You can find more details here <a target="_blank" className="text-blue-800 underline" href="https://github.com/shubham03mathur/sticky-notes">here</a></p></div>;
-    }
+    // if (isMobile) {
+    //     return <div className=" text-white text-lg absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4">Hey! This app is not supported on mobile devices (yet), Because you already got one on your phone 🙂 <p>You can find more details here <a target="_blank" className="text-blue-800 underline" href="https://github.com/shubham03mathur/sticky-notes">here</a></p></div>;
+    // }
 
     return (
         <div>
             <form onSubmit={handleAddNote}>
-                <div className="flex w-full items-center justify-center mt-8">
+                <div className="flex flex-col md:flex-row items-center justify-center mt-8 space-y-4 md:space-y-0 md:space-x-4">
                     <Input
                         name="note"
                         required="required"
                         ref={inputRef}
                         type="text"
-                        className="w-1/3 outline-none"
+                        className="w-full md:w-1/3 outline-none p-2"
                         placeholder="What's on your mind?"
                     />
                     <Button
                         type="submit"
                         variant="destructive"
                         size="lg"
-                        className="m-1"
+                        className="w-full md:w-auto"
                     >
                         Add Note
                     </Button>

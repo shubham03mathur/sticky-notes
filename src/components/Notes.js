@@ -21,14 +21,22 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
     }, [notes.length]);
 
     const handleDragStart = (event, note) => {
+        const isTouchEvent = event.type === "touchstart";
         const currentNote = noteRefs.current[note.id].current;
         const startPos = note.coords;
-        const osX = event.clientX - startPos.x;
-        const osY = event.clientY - startPos.y;
+
+        const startX = isTouchEvent ? event.touches[0].clientX : event.clientX;
+        const startY = isTouchEvent ? event.touches[0].clientY : event.clientY;
+
+        const osX = startX - startPos.x;
+        const osY = startY - startPos.y;
 
         const handleMouseMove = (moveEvent) => {
-            let newLeft = moveEvent.clientX - osX;
-            let newTop = moveEvent.clientY - osY;
+            const moveX = isTouchEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+            const moveY = isTouchEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+            let newLeft = moveX - osX;
+            let newTop = moveY - osY;
 
             const maxLeft = window.innerWidth - currentNote.offsetWidth;
             const maxTop = window.innerHeight - currentNote.offsetHeight;
@@ -41,8 +49,8 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
         };
 
         const handleMouseUp = () => {
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener(isTouchEvent ? "touchmove" : "mousemove", handleMouseMove);
+            document.removeEventListener(isTouchEvent ? "touchend" : "mouseup", handleMouseUp);
 
             const finalSnapshot = currentNote.getBoundingClientRect();
             const newPosition = { x: finalSnapshot.left, y: finalSnapshot.top };
@@ -69,8 +77,8 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
                 );
             });
         };
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("mouseup", handleMouseUp);
+        document.addEventListener(isTouchEvent ? "touchmove" : "mousemove", handleMouseMove);
+        document.addEventListener(isTouchEvent ? "touchend" : "mouseup", handleMouseUp);
     };
 
     const handleClick = (event, noteId) => {
@@ -106,6 +114,7 @@ const Notes = ({ notes = {}, setNotes = () => {} }) => {
                 content={note.text}
                 initialPosition={note?.coords}
                 onMouseDown={(e) => handleDragStart(e, note)}
+                onTouchStart={(e) => handleDragStart(e, note)}
                 onClickHandler={(e) => handleClick(e, note.id)}
             />
         );
